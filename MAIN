@@ -257,7 +257,47 @@ class Mob(pygame.sprite.Sprite):
             self.last_update = time_now
             self.rotation = (self.rotation + self.rotation_speed) % 360 
             new_image = pygame.transform.rotate(self.image_orig, self.rotation)
-            old_center = self.rect.center
+## FIRE ZE MISSILES
+class Missile(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = missile_img
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()
+        self.rect.bottom = y
+        self.rect.centerx = x
+        self.speedy = -10
+
+    def update(self):
+        """should spawn right in front of the player"""
+        self.rect.y += self.speedy
+        if self.rect.bottom < 0:
+            self.kill()
+
+
+###################################################
+## Load all game images
+
+background = pygame.image.load(path.join(img_dir, 'starfield.png')).convert()
+background_rect = background.get_rect()
+## ^^ draw this rect first 
+
+player_img = pygame.image.load(path.join(img_dir, 'playerShip1_orange.png')).convert()
+player_mini_img = pygame.transform.scale(player_img, (25, 19))
+player_mini_img.set_colorkey(BLACK)
+bullet_img = pygame.image.load(path.join(img_dir, 'laserRed16.png')).convert()
+missile_img = pygame.image.load(path.join(img_dir, 'missile.png')).convert_alpha()
+# meteor_img = pygame.image.load(path.join(img_dir, 'meteorBrown_med1.png')).convert()
+meteor_images = []
+meteor_list = [
+    'meteorBrown_big1.png',
+    'meteorBrown_big2.png', 
+    'meteorBrown_med1.png', 
+    'meteorBrown_med3.png',
+    'meteorBrown_small1.png',
+    'meteorBrown_small2.png',
+    'meteorBrown_tiny1.png'
+]            old_center = self.rect.center
             self.image = new_image
             self.rect = self.image.get_rect()
             self.rect.center = old_center
