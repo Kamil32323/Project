@@ -367,6 +367,7 @@ explosion_anim = {}
 explosion_anim['lg'] = []
 explosion_anim['sm'] = []
 explosion_anim['player'] = []
+
 for i in range(9):
     filename = 'regularExplosion0{}.png'.format(i)
     img = pygame.image.load(path.join(img_dir, filename)).convert()
@@ -432,3 +433,34 @@ score = 0
 #pygame.mixer.music.play()
 
 #############################
+## Game loop
+running = True
+menu_display = True
+while running:
+    if menu_display:
+        main_menu()
+        pygame.time.wait(3000)
+
+        #Stop menu music
+        pygame.mixer.music.stop()
+        #Play the gameplay music
+        pygame.mixer.music.load(path.join(sound_folder, 'tgfcoder-FrozenJam-SeamlessLoop.ogg'))
+        pygame.mixer.music.play(-1)     ## makes the gameplay sound in an endless loop
+        
+        menu_display = False
+        
+    #1 Process input/events
+    clock.tick(FPS)     ## will make the loop run at the same speed all the time
+    for event in pygame.event.get():        # gets all the events which have occured till now and keeps tab of them.
+        ## listening for the the X button at the top
+        if event.type == pygame.QUIT:
+            running = False
+
+        ## Press ESC to exit game
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
+        # ## event for shooting the bullets
+        # elif event.type == pygame.KEYDOWN:
+        #     if event.key == pygame.K_SPACE:
+        #         player.shoot()      ## we have to define the shoot()  function
